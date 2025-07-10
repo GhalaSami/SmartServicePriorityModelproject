@@ -1,0 +1,9 @@
+streamlit
+pandas
+numpy
+joblib
+openpyxl
+scikit-learn
+xgboost        # لو استخدمتِ XGBoost في best_rf
+python-bidi    # إذا استخدمتِ get_display() في app.py
+arabic-reshaper
