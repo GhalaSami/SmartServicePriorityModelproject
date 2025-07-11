@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd
 import joblib
 import numpy as np
-from io import BytesIO
 
 # —————————————————————————————————————————————————————————————
 # 1) تحميل المودل وكل Artefacts
@@ -106,17 +105,13 @@ st.dataframe(
 )
 
 # —————————————————————————————————————————————————————————————
-# 7) زر تحميل النتائج بصيغة Excel
+# 7) زر تحميل النتائج بصيغة CSV (بدون أي بافرات)
 # —————————————————————————————————————————————————————————————
-def to_excel_bytes(df: pd.DataFrame) -> bytes:
-    buffer = BytesIO()
-    with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
-        df.to_excel(writer, index=False)
-    return buffer.getvalue()
+csv_data = df.to_csv(index=False)
 
 st.download_button(
-    label="⬇️ تحميل النتائج (Excel)",
-    data=to_excel_bytes(df),
-    file_name="نتائج_الأولوية.xlsx",
-    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    label="⬇️ تحميل النتائج (CSV)",
+    data=csv_data,
+    file_name="نتائج_الأولوية.csv",
+    mime="text/csv"
 )
