@@ -113,5 +113,5 @@ st.download_button(
     label="⬇️ تحميل النتائج (CSV)",
     data=csv_data,
     file_name="نتائج_الأولوية.csv",
-    mime="text/csv",
+    mime="text/csv"
 )
