@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import joblib
 import numpy as np
+from io import BytesIO          # <-- استيراد جديد
 
 # —————————————————————————————————————————————————————————————
 # 1) تحميل المودل وكل Artefacts
@@ -31,11 +32,10 @@ def classify_site_attribute(location):
     else:
         return "غير محدد"
 
-# نحول الصفة النصية إلى قيمة عددية حسب الترتيب المستخدم في التدريب
 site_rank_map = {
-    group2_classification: 3,  # "محور إستراتيجي"
-    group1_classification: 2,  # "مشاريع سكنية"
-    group3_classification: 1,  # "أخرى"
+    group2_classification: 3,
+    group1_classification: 2,
+    group3_classification: 1,
     "غير محدد": 0
 }
 
@@ -67,14 +67,10 @@ if not uploaded_file:
 # —————————————————————————————————————————————————————————————
 df = pd.read_excel(uploaded_file)
 
-# إعادة التسمية إذا لزم
 if "عدد تكرار البلاغ" in df.columns:
     df = df.rename(columns={"عدد تكرار البلاغ": "عدد البلاغات"})
 
-# خريطة درجة الخطورة
 df["درجة الخطورة"] = df["نوع الخدمة"].map(danger_map)
-
-# صفة الموقع نصيًا ثم ترميزها عدديًا
 df["صفة الموقع"] = df["موقع البلاغ"].apply(classify_site_attribute)
 df["صفة الموقع"] = df["صفة الموقع"].map(site_rank_map)
 
@@ -98,26 +94,29 @@ df["مستوى_الأولوية"] = model.predict(X_new)
 
 st.success("✅ تم التقييم! النتائج بالأسفل:")
 st.dataframe(
-    df[
-        [
-            "نوع الخدمة",
-            "موقع البلاغ",
-            "عدد السكان",
-            "عدد البلاغات",
-            "درجة الخطورة",
-            "صفة الموقع",
-            "مستوى_الأولوية",
-        ]
-    ]
+    df[[
+        "نوع الخدمة",
+        "موقع البلاغ",
+        "عدد السكان",
+        "عدد البلاغات",
+        "درجة الخطورة",
+        "صفة الموقع",
+        "مستوى_الأولوية",
+    ]]
 )
 
-# زر لتحميل النتائج
+# —————————————————————————————————————————————————————————————
+# 7) زر تحميل النتائج بصيغة Excel
+# —————————————————————————————————————————————————————————————
 def to_excel_bytes(df: pd.DataFrame) -> bytes:
-    return df.to_excel(index=False, engine="openpyxl")
-
+    buffer = BytesIO()
+    with pd.ExcelWriter(buffer, engine="openpyxl") as writer:
+        df.to_excel(writer, index=False)
+    return buffer.getvalue()
 
 st.download_button(
-    "⬇️ تحميل النتائج (Excel)",
+    label="⬇️ تحميل النتائج (Excel)",
     data=to_excel_bytes(df),
     file_name="نتائج_الأولوية.xlsx",
+    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 )
