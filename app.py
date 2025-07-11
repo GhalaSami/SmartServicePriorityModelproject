@@ -54,8 +54,8 @@ def apply_contextual_boost(row):
 # —————————————————————————————————————————————————————————————
 st.set_page_config(page_title="نموذج أولوية البلاغات", layout="centered")
 st.title("📊 نظام تحديد أولوية البلاغات")
-st.caption("🆕 خيار تحميل النتائج بصيغة CSV")
-st.markdown("ارفع ملف بلاغات (Excel)، وسيتم تحديد مستوى الأولوية تلقائيًا")
+st.caption("🆕 (CSV Download Only)")
+st.markdown("ارفع ملف بلاغات (Excel)، وسيتم تحديد مستوى الأولوية وتصدير النتائج بصيغة CSV")
 
 uploaded_file = st.file_uploader("📁 حمّل ملف البلاغات (Excel)", type=["xlsx"])
 if not uploaded_file:
@@ -67,15 +67,19 @@ if not uploaded_file:
 # —————————————————————————————————————————————————————————————
 df = pd.read_excel(uploaded_file)
 
+# إعادة التسمية لو لزم الأمر
 if "عدد تكرار البلاغ" in df.columns:
     df = df.rename(columns={"عدد تكرار البلاغ": "عدد البلاغات"})
 
+# خريطة درجة الخطورة
 df["درجة الخطورة"] = df["نوع الخدمة"].map(danger_map)
+
+# صفة الموقع وعكسها لرقم
 df["صفة الموقع"] = df["موقع البلاغ"].apply(classify_site_attribute)
 df["صفة الموقع"] = df["صفة الموقع"].map(site_rank_map)
 
 # —————————————————————————————————————————————————————————————
-# 5) حساب الـ score والـ boost
+# 5) حساب score و boost
 # —————————————————————————————————————————————————————————————
 df["score"] = (
     df["درجة الخطورة"] * weights["درجة الخطورة"]
@@ -106,12 +110,14 @@ st.dataframe(
 )
 
 # —————————————————————————————————————————————————————————————
-# 7) زر تحميل النتائج بصيغة CSV (بدون أي بافرات)
+# 7) زر تحميل النتائج بصيغة CSV
 # —————————————————————————————————————————————————————————————
 csv_data = df.to_csv(index=False)
+
 st.download_button(
     label="⬇️ تحميل النتائج (CSV)",
     data=csv_data,
     file_name="نتائج_الأولوية.csv",
     mime="text/csv"
 )
+
