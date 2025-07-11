@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import joblib
 import numpy as np
-from io import BytesIO          # <-- استيراد جديد
+from io import BytesIO
 
 # —————————————————————————————————————————————————————————————
 # 1) تحميل المودل وكل Artefacts
@@ -47,8 +47,8 @@ def apply_contextual_boost(row):
         boost += 3000
     if row["عدد السكان"] > 100000 and row["درجة الخطورة"] >= 3:
         boost += 4000
-    noise = np.random.randint(-100, 100)
-    return boost + noise
+    boost += np.random.randint(-100, 100)
+    return boost
 
 # —————————————————————————————————————————————————————————————
 # 3) واجهة Streamlit
