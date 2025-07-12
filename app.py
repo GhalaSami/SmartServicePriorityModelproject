@@ -17,34 +17,60 @@ st.markdown(
       [data-testid="stAppViewContainer"] * {
         color: #000000 !important;
       }
+
       /* صندوق رفع الملف باللون الأخضر */
-      [data-baseweb="file-uploader"] {
+      [data-testid="stFileUploader"] {
         background-color: #28a745 !important;
+      }
+      /* نص الرسالة والأيقونة داخل صندوق الرفع */
+      [data-testid="stFileUploader"] span,
+      [data-testid="stFileUploader"] label,
+      [data-testid="stFileUploader"] svg {
         color: #000000 !important;
+        fill:  #000000 !important;
       }
-      /* نص الرسالة */
-      [data-baseweb="file-uploader"] span,
-      [data-baseweb="file-uploader"] label {
-        color: #000000 !important;
-      }
-      /* أيقونة الرفع */
-      [data-baseweb="file-uploader"] svg {
-        fill: #000000 !important;
-      }
-      /* زر Browse files */
-      [data-baseweb="file-uploader"] button {
+      /* زر Browse files داخل صندوق الرفع */
+      [data-testid="stFileUploader"] button {
         background-color: #FFFFFF !important;
         color: #000000 !important;
         border: 1px solid #000000 !important;
         font-weight: bold !important;
         border-radius: 4px !important;
       }
-      /* بقية CSS الجدول والأزرار كما سبق */
-      ...
+
+      /* جدول HTML بإطار أخضر 2px ونص مركزي */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1em;
+      }
+      table, th, td {
+        border: 2px solid #28a745 !important;
+      }
+      th, td {
+        padding: 8px;
+        text-align: center;
+      }
+
+      /* زرّات Streamlit الأساسية (بما في ذلك Download) */
+      .stButton>button,
+      [data-testid="stDownloadButton"] button {
+        background-color: #28a745 !important;
+        color: #FFFFFF !important;
+        font-weight: bold !important;
+        border-radius: 5px !important;
+        padding: 0.6em 1.2em !important;
+      }
+
+      /* عناوين مركزيّة */
+      h1, h2 {
+        text-align: center !important;
+      }
     </style>
     """,
     unsafe_allow_html=True
 )
+
 
 
 # —————————————————————————————————————————————————————————————
