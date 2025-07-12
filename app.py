@@ -6,6 +6,14 @@ import numpy as np
 # —————————————————————————————————————————————————————————————
 # 0) حقن CSS مخصَّص
 # —————————————————————————————————————————————————————————————
+# —————————————————————————————————————————————————————————————
+# 0) إعداد الصفحة
+# —————————————————————————————————————————————————————————————
+st.set_page_config(page_title="سناد", layout="centered")
+
+# —————————————————————————————————————————————————————————————
+# 1) حقن Bootstrap و CSS مخصَّص (قبل أي مكوّن UI)
+# —————————————————————————————————————————————————————————————
 st.markdown(
     """
     <!-- Bootstrap CSS -->
@@ -16,12 +24,12 @@ st.markdown(
       crossorigin="anonymous"
     >
     <style>
-      /* حاوية التطبيق خلفية بيضاء ونص أسود */
+      /* خلفية الصفحة بيضاء ونص أسود */
       [data-testid="stAppViewContainer"] {
-        background-color: #FFFFFF;
+        background-color: #fff;
       }
       [data-testid="stAppViewContainer"] * {
-        color: #000000 !important;
+        color: #000 !important;
       }
 
       /* Dropzone كامل أخضر */
@@ -30,28 +38,27 @@ st.markdown(
         border-radius: 8px !important;
         padding: 1rem !important;
       }
-      [data-testid="stFileUploaderDropzoneInstructions"] {
-        color: #000000 !important;
-      }
-      [data-testid="stFileUploaderDropzone"] svg,
-      [data-testid="stFileUploaderDropzone"] .st-emotion-cache-9ycgxx,
+      [data-testid="stFileUploaderDropzoneInstructions"],
       [data-testid="stFileUploaderDropzone"] small {
-        color: #000000 !important;
-        fill:  #000000 !important;
+        color: #000 !important;
       }
+      [data-testid="stFileUploaderDropzone"] svg {
+        fill: #000 !important;
+      }
+      /* زرّ Browse داخل الصندوق */
       [data-testid="stBaseButton-secondary"] {
-        background-color: #FFFFFF !important;
-        color: #000000   !important;
-        border: 1px solid #000000 !important;
+        background-color: #fff !important;
+        color: #000 !important;
+        border: 1px solid #000 !important;
         font-weight: bold !important;
         border-radius: 4px !important;
       }
 
-      /* زرّات Streamlit (بما في ذلك Download) */
+      /* أزرار Download وغيرها خضراء */
       .stButton>button,
       [data-testid="stDownloadButton"] button {
         background-color: #28a745 !important;
-        color: #FFFFFF   !important;
+        color: #fff !important;
         font-weight: bold !important;
         border-radius: 5px !important;
         padding: 0.6rem 1.2rem !important;
@@ -66,6 +73,24 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# —————————————————————————————————————————————————————————————
+# 2) شعار "سناد" مُتمركز
+# —————————————————————————————————————————————————————————————
+# تأكدي من رفع logo.png في جذر المشروع
+st.markdown(
+    """
+    <div class="text-center mb-3">
+      <img src="logo.png" width="150" alt="سناد Logo"/>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# —————————————————————————————————————————————————————————————
+# 3) العنوان والوصف
+# —————————————————————————————————————————————————————————————
+st.markdown("<h1 class='fw-bold'>سناد</h1>", unsafe_allow_html=True)
+st.caption("تحميل النتائج بصيغة CSV فقط")
 
 
 # —————————————————————————————————————————————————————————————
@@ -157,14 +182,17 @@ df["مستوى_الأولوية"] = model.predict(X_new)
 
 st.success("تم التقييم:")
 
-# استبدلنا st.dataframe بـ HTML table ليمكن تطبيق CSS
-html_table = df.head(10)[[
-    "نوع الخدمة","موقع البلاغ","عدد السكان",
-    "عدد البلاغات","درجة الخطورة","صفة الموقع",
-    "مستوى_الأولوية"
-]].to_html(index=False)
-
+# بدل st.dataframe استخدم جدول HTML مع كلاسات Bootstrap
+html_table = (
+    df.head(10)[[
+        "نوع الخدمة","موقع البلاغ","عدد السكان",
+        "عدد البلاغات","درجة الخطورة","صفة الموقع",
+        "مستوى_الأولوية"
+    ]]
+    .to_html(index=False, classes="table table-dark table-striped")
+)
 st.markdown(html_table, unsafe_allow_html=True)
+
 
 # —————————————————————————————————————————————————————————————
 # 7) زر تحميل النتائج بصيغة CSV
