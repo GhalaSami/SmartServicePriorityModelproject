@@ -7,15 +7,12 @@ import numpy as np
 # 0) إعداد الصفحة
 # —————————————————————————————————————————————————————————————
 st.set_page_config(page_title="سناد", layout="centered")
-st.markdown(
-    """
-    <div style="text-align: center; margin-top: 1rem; margin-bottom: 1rem;">
-      <img src="logo1.png" width="200" alt="سناد Logo" />
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
+# —————————————————————————————————————————————————————————————
+# 1) عرض الشعار مُتمركزًا
+# —————————————————————————————————————————————————————————————
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
+    st.image("logo1.png", width=200)
 # —————————————————————————————————————————————————————————————
 # 1) حقن Bootstrap و CSS مخصَّص (قبل أي مكوّن UI)
 # —————————————————————————————————————————————————————————————
@@ -84,7 +81,7 @@ st.markdown(
       color: #000;
       margin-top: 0.5rem;
     ">
-      الرجاء قم بتحميل البلاغات هنا
+      الرجاء قم بتحميل الملف هنا
     </p>
     """,
     unsafe_allow_html=True,
