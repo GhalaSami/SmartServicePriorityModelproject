@@ -74,7 +74,7 @@ st.markdown(
 st.markdown(
     """
     <div class="text-center mb-3">
-      <img src="logo.png" width="150" alt="سناد Logo"/>
+      <img src="logo1.png" width="150" alt="سناد Logo"/>
     </div>
     """,
     unsafe_allow_html=True
