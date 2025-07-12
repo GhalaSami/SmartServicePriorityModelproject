@@ -8,13 +8,6 @@ import numpy as np
 # —————————————————————————————————————————————————————————————
 st.markdown(
     """
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-ENjdO4Dr2bkBIFxQpeo5sJbL/w9iYhZ+3oQZl5Nq3uZMl+4xVZ9ZZTtmI3UksdQR"
-      crossorigin="anonymous"
-    >
     <style>
       /* حاوية التطبيق خلفية بيضاء ونص أسود */
       [data-testid="stAppViewContainer"] {
@@ -24,28 +17,35 @@ st.markdown(
         color: #000000 !important;
       }
 
-      /* صندوق رفع الملف (Dropzone) أخضر */
+      /* Dropzone كامل */
       [data-testid="stFileUploaderDropzone"] {
         background-color: #28a745 !important;
         border-radius: 8px !important;
         padding: 1rem !important;
       }
+      /* تعليمات داخل Dropzone */
       [data-testid="stFileUploaderDropzoneInstructions"] {
         color: #000000 !important;
       }
-      [data-testid="stFileUploaderDropzone"] svg {
-        fill: #000000 !important;
-      }
+      /* أيقونة ونصوص داخل Dropzone */
+      [data-testid="stFileUploaderDropzone"] svg,
       [data-testid="stFileUploaderDropzone"] .st-emotion-cache-9ycgxx,
       [data-testid="stFileUploaderDropzone"] small {
         color: #000000 !important;
+        fill:  #000000 !important;
       }
+      /* زر Browse files */
       [data-testid="stBaseButton-secondary"] {
         background-color: #FFFFFF !important;
         color: #000000   !important;
         border: 1px solid #000000 !important;
         font-weight: bold !important;
         border-radius: 4px !important;
+      }
+
+      /* جدول Bootstrap داكن مخطط */
+      .table {
+        width: 100%;
       }
 
       /* زرّات Streamlit (بما في ذلك Download) */
@@ -55,7 +55,7 @@ st.markdown(
         color: #FFFFFF   !important;
         font-weight: bold !important;
         border-radius: 5px !important;
-        padding: 0.6em 1.2em !important;
+        padding: 0.6rem 1.2rem !important;
       }
 
       /* عناوين مركزيّة */
