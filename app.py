@@ -4,9 +4,6 @@ import joblib
 import numpy as np
 
 # —————————————————————————————————————————————————————————————
-# 0) حقن CSS مخصَّص
-# —————————————————————————————————————————————————————————————
-# —————————————————————————————————————————————————————————————
 # 0) إعداد الصفحة
 # —————————————————————————————————————————————————————————————
 st.set_page_config(page_title="سناد", layout="centered")
@@ -31,8 +28,7 @@ st.markdown(
       [data-testid="stAppViewContainer"] * {
         color: #000 !important;
       }
-
-      /* Dropzone كامل أخضر */
+      /* Dropzone أخضر */
       [data-testid="stFileUploaderDropzone"] {
         background-color: #28a745 !important;
         border-radius: 8px !important;
@@ -45,7 +41,7 @@ st.markdown(
       [data-testid="stFileUploaderDropzone"] svg {
         fill: #000 !important;
       }
-      /* زرّ Browse داخل الصندوق */
+      /* زر Browse داخل Dropzone */
       [data-testid="stBaseButton-secondary"] {
         background-color: #fff !important;
         color: #000 !important;
@@ -53,7 +49,6 @@ st.markdown(
         font-weight: bold !important;
         border-radius: 4px !important;
       }
-
       /* أزرار Download وغيرها خضراء */
       .stButton>button,
       [data-testid="stDownloadButton"] button {
@@ -63,7 +58,6 @@ st.markdown(
         border-radius: 5px !important;
         padding: 0.6rem 1.2rem !important;
       }
-
       /* عناوين مركزيّة */
       h1, h2 {
         text-align: center !important;
@@ -76,7 +70,7 @@ st.markdown(
 # —————————————————————————————————————————————————————————————
 # 2) شعار "سناد" مُتمركز
 # —————————————————————————————————————————————————————————————
-# تأكدي من رفع logo.png في جذر المشروع
+# تأكّد من رفع logo.png في جذر المشروع
 st.markdown(
     """
     <div class="text-center mb-3">
@@ -92,24 +86,23 @@ st.markdown(
 st.markdown("<h1 class='fw-bold'>سناد</h1>", unsafe_allow_html=True)
 st.caption("تحميل النتائج بصيغة CSV فقط")
 
-
 # —————————————————————————————————————————————————————————————
-# 1) تحميل المودل وكل Artefacts
+# 4) تحميل المودل وكلّ Artefacts
 # —————————————————————————————————————————————————————————————
 artifacts = joblib.load("final_model.pkl")
-model = artifacts["model"]
-features = artifacts["features"]
-danger_map = artifacts["danger_map"]
-weights = artifacts["weights"]
-group1_locations = artifacts["group1_locations"]
-group2_locations = artifacts["group2_locations"]
-group3_locations = artifacts["group3_locations"]
+model                 = artifacts["model"]
+features              = artifacts["features"]
+danger_map            = artifacts["danger_map"]
+weights               = artifacts["weights"]
+group1_locations      = artifacts["group1_locations"]
+group2_locations      = artifacts["group2_locations"]
+group3_locations      = artifacts["group3_locations"]
 group1_classification = artifacts["group1_classification"]
 group2_classification = artifacts["group2_classification"]
 group3_classification = artifacts["group3_classification"]
 
 # —————————————————————————————————————————————————————————————
-# 2) دوال مساعدة كما كانت
+# 5) دوال مساعدة
 # —————————————————————————————————————————————————————————————
 def classify_site_attribute(location):
     if location in group1_locations:
@@ -140,49 +133,44 @@ def apply_contextual_boost(row):
     return boost
 
 # —————————————————————————————————————————————————————————————
-# 3) واجهة Streamlit
+# 6) رفع ملف البلاغات وتوقّف إذا لم يُرفع
 # —————————————————————————————————————————————————————————————
-st.set_page_config(page_title="سناد", layout="centered")
-st.title("سناد")
-st.caption("تحميل النتائج بصيغة CSV فقط")
-
-uploaded_file = st.file_uploader(" حمّل ملف البلاغلات", type=["xlsx"])
+uploaded_file = st.file_uploader("حمّل ملف البلاغات (Excel)", type=["xlsx"])
 if not uploaded_file:
     st.info("لم يتم رفع ملف بعد")
     st.stop()
 
 # —————————————————————————————————————————————————————————————
-# 4) قراءة وتجهيز البيانات
+# 7) قراءة وتجهيز البيانات
 # —————————————————————————————————————————————————————————————
 df = pd.read_excel(uploaded_file)
 if "عدد تكرار البلاغ" in df.columns:
-    df = df.rename(columns={"عدد تكرار البلاغ": "عدد البلاغات"})
+    df.rename(columns={"عدد تكرار البلاغ": "عدد البلاغات"}, inplace=True)
 
 df["درجة الخطورة"] = df["نوع الخدمة"].map(danger_map)
-df["صفة الموقع"] = df["موقع البلاغ"].apply(classify_site_attribute)
-df["صفة الموقع"] = df["صفة الموقع"].map(site_rank_map)
+df["صفة الموقع"]  = df["موقع البلاغ"].apply(classify_site_attribute)
+df["صفة الموقع"]  = df["صفة الموقع"].map(site_rank_map)
 
 # —————————————————————————————————————————————————————————————
-# 5) حساب score و boost
+# 8) حساب score و boost
 # —————————————————————————————————————————————————————————————
 df["score"] = (
-    df["درجة الخطورة"] * weights["درجة الخطورة"]
+      df["درجة الخطورة"] * weights["درجة الخطورة"]
     + df["عدد البلاغات"] * weights["عدد البلاغات"]
-    + df["عدد السكان"] * weights["عدد السكان"]
-    + df["صفة الموقع"] * weights["صفة الموقع"]
+    + df["عدد السكان"]     * weights["عدد السكان"]
+    + df["صفة الموقع"]      * weights["صفة الموقع"]
 )
 df["boost"] = df.apply(apply_contextual_boost, axis=1)
 df["score"] += df["boost"]
 
 # —————————————————————————————————————————————————————————————
-# 6) التنبؤ وعرض النتائج
+# 9) التنبؤ وعرض أول 10 صفوف بجدول Bootstrap
 # —————————————————————————————————————————————————————————————
 X_new = df[features]
 df["مستوى_الأولوية"] = model.predict(X_new)
 
-st.success("تم التقييم:")
+st.success("✅ تم التقييم!")
 
-# بدل st.dataframe استخدم جدول HTML مع كلاسات Bootstrap
 html_table = (
     df.head(10)[[
         "نوع الخدمة","موقع البلاغ","عدد السكان",
@@ -193,13 +181,12 @@ html_table = (
 )
 st.markdown(html_table, unsafe_allow_html=True)
 
-
 # —————————————————————————————————————————————————————————————
-# 7) زر تحميل النتائج بصيغة CSV
+# 10) زرّ تحميل النتائج بصيغة CSV
 # —————————————————————————————————————————————————————————————
 csv_data = df.to_csv(index=False)
 st.download_button(
-    label=" تحميل النتائج (CSV)",
+    label="⬇️ تحميل النتائج (CSV)",
     data=csv_data,
     file_name="نتائج_الأولوية.csv",
     mime="text/csv"
