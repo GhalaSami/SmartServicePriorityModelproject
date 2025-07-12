@@ -13,13 +13,17 @@ st.markdown(
       [data-testid="stAppViewContainer"] {
         background-color: #FFFFFF;
       }
+      /* إجبار كل النصوص على الأسود */
+      [data-testid="stAppViewContainer"] * {
+        color: #000000 !important;
+      }
       /* عنوان مركزي وأسود */
-      h1, h2, .css-12oz5g7.e16nr0p33 {
+      h1, h2 {
         text-align: center !important;
         color: #000000 !important;
         font-weight: bold !important;
       }
-      /* زرّ أساسي أخضر ونص أبيض */
+      /* زرّ التحميل أخضر ونصه أبيض */
       [data-testid="stDownloadButton"] button {
         background-color: #28a745 !important;
         color: #FFFFFF !important;
@@ -27,19 +31,18 @@ st.markdown(
         border-radius: 5px !important;
         padding: 0.6em 1.2em !important;
       }
-      /* تصميم جدول HTML */
+      /* جدول HTML بإطار أخضر 2px ونص مركزي */
       table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 1em;
       }
       table, th, td {
-        border: 1px solid #ddd;
+        border: 2px solid #28a745 !important;
       }
       th, td {
         padding: 8px;
         text-align: center;
-        color: #000000;
       }
     </style>
     """,
@@ -95,13 +98,13 @@ def apply_contextual_boost(row):
 # —————————————————————————————————————————————————————————————
 # 3) واجهة Streamlit
 # —————————————————————————————————————————————————————————————
-st.set_page_config(page_title="نموذج أولوية البلاغات", layout="centered")
-st.title("📊 نظام تحديد أولوية البلاغات")
+st.set_page_config(page_title="سناد", layout="centered")
+st.title("سناد")
 st.caption("تحميل النتائج بصيغة CSV فقط")
 
-uploaded_file = st.file_uploader("📁 حمّل ملف البلاغات (Excel)", type=["xlsx"])
+uploaded_file = st.file_uploader(" حمّل ملف البلاغلات", type=["xlsx"])
 if not uploaded_file:
-    st.info("لم يتم رفع ملف بعد.")
+    st.info("لم يتم رفع ملف بعد")
     st.stop()
 
 # —————————————————————————————————————————————————————————————
@@ -133,14 +136,14 @@ df["score"] += df["boost"]
 X_new = df[features]
 df["مستوى_الأولوية"] = model.predict(X_new)
 
-st.success("✅ تم التقييم! النتائج بالأسفل:")
+st.success("تم التقييم:")
 
 # استبدلنا st.dataframe بـ HTML table ليمكن تطبيق CSS
-html_table = df[[
+html_table = df.head(10)[[
     "نوع الخدمة","موقع البلاغ","عدد السكان",
     "عدد البلاغات","درجة الخطورة","صفة الموقع",
     "مستوى_الأولوية"
-]].to_html(index=False, classes="dataframe")
+]].to_html(index=False)
 
 st.markdown(html_table, unsafe_allow_html=True)
 
@@ -149,7 +152,7 @@ st.markdown(html_table, unsafe_allow_html=True)
 # —————————————————————————————————————————————————————————————
 csv_data = df.to_csv(index=False)
 st.download_button(
-    label="⬇️ تحميل النتائج (CSV)",
+    label=" تحميل النتائج (CSV)",
     data=csv_data,
     file_name="نتائج_الأولوية.csv",
     mime="text/csv"
