@@ -7,7 +7,17 @@ import numpy as np
 # 0) إعداد الصفحة
 # —————————————————————————————————————————————————————————————
 st.set_page_config(page_title="سناد", layout="centered")
-st.image("logo1.png", width=150)
+
+# نقوم بتحميل وعرض الصورة مركزية
+# تأكد أنّ ملف logo1.png في نفس مجلد app.py
+st.markdown(
+    """
+    <div style="text-align: center; margin-top: 1rem; margin-bottom: 1rem;">
+      <img src="logo1.png" width="200" alt="سناد Logo"/>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 # —————————————————————————————————————————————————————————————
 # 1) حقن Bootstrap و CSS مخصَّص (قبل أي مكوّن UI)
 # —————————————————————————————————————————————————————————————
