@@ -9,33 +9,38 @@ import numpy as np
 st.markdown(
     """
     <style>
-      /* خلفية الصفحة بيضاء */
+      /* حاوية التطبيق خلفية بيضاء ونص أسود */
       [data-testid="stAppViewContainer"] {
         background-color: #FFFFFF;
       }
-      /* إجبار كل النصوص على الأسود */
       [data-testid="stAppViewContainer"] * {
         color: #000000 !important;
       }
 
-      /* -----------------------------
-         تلوين كامل صندوق الرفع أخضر
-         ----------------------------- */
-      [data-testid="stFileUploader"] > div,
-      [data-testid="stFileUploader"] > div > div,
-      [data-testid="stFileUploader"] > div > div > div {
+      /* صندوق رفع الملف (Dropzone) أخضر */
+      [data-testid="stFileUploaderDropzone"] {
         background-color: #28a745 !important;
         border-radius: 8px !important;
         padding: 1rem !important;
       }
-      /* نص الرسالة والأيقونة داخل الصندوق */
-      [data-testid="stFileUploader"] span,
-      [data-testid="stFileUploader"] svg {
+      /* تعليمات السحب/وإفلات داخل الـ Dropzone */
+      [data-testid="stFileUploaderDropzoneInstructions"] {
         color: #000000 !important;
-        fill:  #000000 !important;
       }
-      /* زر Browse files داخل uploader */
-      [data-testid="stFileUploader"] button {
+      /* الأيقونة داخل الصندوق */
+      [data-testid="stFileUploaderDropzone"] svg {
+        fill: #000000 !important;
+      }
+      /* نص “Drag and drop file here” */
+      [data-testid="stFileUploaderDropzone"] .st-emotion-cache-9ycgxx {
+        color: #000000 !important;
+      }
+      /* تفاصيل الحجم (small) */
+      [data-testid="stFileUploaderDropzone"] small {
+        color: #000000 !important;
+      }
+      /* زر “Browse files” داخل الـ Dropzone */
+      [data-testid="stBaseButton-secondary"] {
         background-color: #FFFFFF !important;
         color: #000000   !important;
         border: 1px solid #000000 !important;
@@ -43,7 +48,7 @@ st.markdown(
         border-radius: 4px !important;
       }
 
-      /* جدول HTML بإطار أخضر 2px ونص مركزي */
+      /* باقي التنسيقات كما كانت: جدول وإطارات خضراء وأزرار */
       table {
         width: 100%;
         border-collapse: collapse;
@@ -56,8 +61,6 @@ st.markdown(
         padding: 8px;
         text-align: center;
       }
-
-      /* زرّات Streamlit (بما في ذلك Download) */
       .stButton>button,
       [data-testid="stDownloadButton"] button {
         background-color: #28a745 !important;
@@ -66,8 +69,6 @@ st.markdown(
         border-radius: 5px !important;
         padding: 0.6em 1.2em !important;
       }
-
-      /* عناوين مركزيّة */
       h1, h2 {
         text-align: center !important;
       }
