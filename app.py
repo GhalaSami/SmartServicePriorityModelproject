@@ -9,29 +9,19 @@ import numpy as np
 st.markdown(
     """
     <style>
-      /* خلفية الصفحة */
+      /* خلفية الصفحة بيضاء */
       [data-testid="stAppViewContainer"] {
         background-color: #FFFFFF;
       }
-      /* إجبار كل النصوص على الأسود */
+      /* كل النصوص سوداء */
       [data-testid="stAppViewContainer"] * {
         color: #000000 !important;
       }
-      /* عنوان مركزي وأسود */
+      /* عنوان مركزي */
       h1, h2 {
         text-align: center !important;
-        color: #000000 !important;
-        font-weight: bold !important;
       }
-      /* زرّ التحميل أخضر ونصه أبيض */
-      [data-testid="stDownloadButton"] button {
-        background-color: #28a745 !important;
-        color: #FFFFFF !important;
-        font-weight: bold !important;
-        border-radius: 5px !important;
-        padding: 0.6em 1.2em !important;
-      }
-      /* جدول HTML بإطار أخضر 2px ونص مركزي */
+      /* تصميم الجدول */
       table {
         width: 100%;
         border-collapse: collapse;
@@ -44,10 +34,21 @@ st.markdown(
         padding: 8px;
         text-align: center;
       }
+      /* زرّات Streamlit الأساسية (شاملة Download) */
+      .stButton>button,
+      .stDownloadButton button,
+      [data-testid="stDownloadButton"] button {
+        background-color: #28a745 !important;
+        color: #FFFFFF !important;
+        font-weight: bold !important;
+        border-radius: 5px !important;
+        padding: 0.6em 1.2em !important;
+      }
     </style>
     """,
     unsafe_allow_html=True
 )
+
 
 # —————————————————————————————————————————————————————————————
 # 1) تحميل المودل وكل Artefacts
