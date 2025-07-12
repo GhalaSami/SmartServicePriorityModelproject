@@ -18,17 +18,19 @@ st.markdown(
         color: #000000 !important;
       }
 
-      /* صندوق رفع الملف: استهداف الديف ذي role="button" داخل uploader */
-      [data-testid="stFileUploader"] div[role="button"] {
+      /* -----------------------------
+         تلوين كامل صندوق الرفع أخضر
+         ----------------------------- */
+      [data-testid="stFileUploader"] > div,
+      [data-testid="stFileUploader"] > div > div,
+      [data-testid="stFileUploader"] > div > div > div {
         background-color: #28a745 !important;
-        color: #000000   !important;
         border-radius: 8px !important;
         padding: 1rem !important;
       }
       /* نص الرسالة والأيقونة داخل الصندوق */
-      [data-testid="stFileUploader"] div[role="button"] *,
-      [data-testid="stFileUploader"] div[role="button"] span,
-      [data-testid="stFileUploader"] div[role="button"] svg {
+      [data-testid="stFileUploader"] span,
+      [data-testid="stFileUploader"] svg {
         color: #000000 !important;
         fill:  #000000 !important;
       }
