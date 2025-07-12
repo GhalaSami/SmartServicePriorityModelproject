@@ -136,7 +136,10 @@ def apply_contextual_boost(row):
 # —————————————————————————————————————————————————————————————
 # 6) رفع ملف البلاغات وتوقّف إذا لم يُرفع
 # —————————————————————————————————————————————————————————————
-uploaded_file = st.file_uploader("حمّل ملف البلاغات", type=["xlsx"])
+uploaded_file = st.file_uploader(
+    label="", 
+    type=["xlsx"]
+)
 if not uploaded_file:
     st.info("لم يتم رفع الملف بعد")
     st.stop()
