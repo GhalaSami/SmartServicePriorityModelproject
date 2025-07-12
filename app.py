@@ -10,7 +10,14 @@ st.set_page_config(page_title="سناد", layout="centered")
 
 
 # تأكدي أن logo1.png في جذر المشروع ومرفوع للـ git
-st.image("logo1.png", width=150)
+st.markdown(
+    """
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <img src="logo1.png" width="200" alt="سناد Logo"/>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 # —————————————————————————————————————————————————————————————
 # 1) حقن Bootstrap و CSS مخصَّص (قبل أي مكوّن UI)
@@ -62,32 +69,15 @@ st.markdown(
         border-radius: 5px !important;
         padding: 0.6rem 1.2rem !important;
       }
-      /* عناوين مركزيّة */
-      h1, h2 {
-        text-align: center !important;
-      }
     </style>
     """,
-    unsafe_allow_html=True
+    unsafe_allow_html=True,
 )
 
-# —————————————————————————————————————————————————————————————
-# 2) شعار "سناد" مُتمركز
-# —————————————————————————————————————————————————————————————
-# تأكّد من رفع logo.png في جذر المشروع
-st.markdown(
-    """
-    <div class="text-center mb-3">
-      <img src="logo1.png" width="150" alt="سناد Logo"/>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
 
 # —————————————————————————————————————————————————————————————
 # 3) العنوان والوصف
 # —————————————————————————————————————————————————————————————
-st.markdown("<h1 class='fw-bold'>سناد</h1>", unsafe_allow_html=True)
 st.caption("تحميل النتائج بصيغة CSV فقط")
 
 # —————————————————————————————————————————————————————————————
