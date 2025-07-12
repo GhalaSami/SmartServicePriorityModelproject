@@ -18,21 +18,24 @@ st.markdown(
         color: #000000 !important;
       }
 
-      /* صندوق رفع الملف باللون الأخضر */
-      [data-testid="stFileUploader"] {
+      /* صندوق رفع الملف: استهداف الديف ذي role="button" داخل uploader */
+      [data-testid="stFileUploader"] div[role="button"] {
         background-color: #28a745 !important;
+        color: #000000   !important;
+        border-radius: 8px !important;
+        padding: 1rem !important;
       }
-      /* نص الرسالة والأيقونة داخل صندوق الرفع */
-      [data-testid="stFileUploader"] span,
-      [data-testid="stFileUploader"] label,
-      [data-testid="stFileUploader"] svg {
+      /* نص الرسالة والأيقونة داخل الصندوق */
+      [data-testid="stFileUploader"] div[role="button"] *,
+      [data-testid="stFileUploader"] div[role="button"] span,
+      [data-testid="stFileUploader"] div[role="button"] svg {
         color: #000000 !important;
         fill:  #000000 !important;
       }
-      /* زر Browse files داخل صندوق الرفع */
+      /* زر Browse files داخل uploader */
       [data-testid="stFileUploader"] button {
         background-color: #FFFFFF !important;
-        color: #000000 !important;
+        color: #000000   !important;
         border: 1px solid #000000 !important;
         font-weight: bold !important;
         border-radius: 4px !important;
@@ -52,11 +55,11 @@ st.markdown(
         text-align: center;
       }
 
-      /* زرّات Streamlit الأساسية (بما في ذلك Download) */
+      /* زرّات Streamlit (بما في ذلك Download) */
       .stButton>button,
       [data-testid="stDownloadButton"] button {
         background-color: #28a745 !important;
-        color: #FFFFFF !important;
+        color: #FFFFFF   !important;
         font-weight: bold !important;
         border-radius: 5px !important;
         padding: 0.6em 1.2em !important;
@@ -70,7 +73,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
 
 
 # —————————————————————————————————————————————————————————————
