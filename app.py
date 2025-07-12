@@ -189,6 +189,8 @@ st.markdown(html_table, unsafe_allow_html=True)
 # 10) زرّ تحميل النتائج بصيغة CSV
 # —————————————————————————————————————————————————————————————
 csv_data = df.to_csv(index=False)
+col1, col2, col3 = st.columns([1, 2, 1])
+with col2:
 st.download_button(
     label=" CSV تحميل النتائج",
     data=csv_data,
