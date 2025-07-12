@@ -7,8 +7,14 @@ import numpy as np
 # 0) إعداد الصفحة
 # —————————————————————————————————————————————————————————————
 st.set_page_config(page_title="سناد", layout="centered")
-st.image("logo1.png", width=200)
-
+st.markdown(
+    """
+    <div style="text-align: center; margin-top: 1rem; margin-bottom: 1rem;">
+      <img src="logo1.png" width="200" alt="سناد Logo" />
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
 
 # —————————————————————————————————————————————————————————————
 # 1) حقن Bootstrap و CSS مخصَّص (قبل أي مكوّن UI)
@@ -69,7 +75,20 @@ st.markdown(
 # —————————————————————————————————————————————————————————————
 # 3) العنوان والوصف
 # —————————————————————————————————————————————————————————————
-st.caption("تحميل النتائج بصيغة CSV فقط")
+st.markdown(
+    """
+    <p style="
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      color: #000;
+      margin-top: 0.5rem;
+    ">
+      الرجاء قم بتحميل البلاغات هنا
+    </p>
+    """,
+    unsafe_allow_html=True,
+)
 
 # —————————————————————————————————————————————————————————————
 # 4) تحميل المودل وكلّ Artefacts
@@ -120,9 +139,9 @@ def apply_contextual_boost(row):
 # —————————————————————————————————————————————————————————————
 # 6) رفع ملف البلاغات وتوقّف إذا لم يُرفع
 # —————————————————————————————————————————————————————————————
-uploaded_file = st.file_uploader("حمّل ملف البلاغات (Excel)", type=["xlsx"])
+uploaded_file = st.file_uploader("حمّل ملف البلاغات", type=["xlsx"])
 if not uploaded_file:
-    st.info("لم يتم رفع ملف بعد")
+    st.info("لم يتم رفع الملف بعد")
     st.stop()
 
 # —————————————————————————————————————————————————————————————
