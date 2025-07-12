@@ -7,7 +7,7 @@ import numpy as np
 # 0) إعداد الصفحة
 # —————————————————————————————————————————————————————————————
 st.set_page_config(page_title="سناد", layout="centered")
-
+st.image("logo1.png", width=150)
 # —————————————————————————————————————————————————————————————
 # 1) حقن Bootstrap و CSS مخصَّص (قبل أي مكوّن UI)
 # —————————————————————————————————————————————————————————————
@@ -169,7 +169,7 @@ df["score"] += df["boost"]
 X_new = df[features]
 df["مستوى_الأولوية"] = model.predict(X_new)
 
-st.success("✅ تم التقييم!")
+st.success("!تم التقييم")
 
 html_table = (
     df.head(10)[[
@@ -186,7 +186,7 @@ st.markdown(html_table, unsafe_allow_html=True)
 # —————————————————————————————————————————————————————————————
 csv_data = df.to_csv(index=False)
 st.download_button(
-    label="⬇️ تحميل النتائج (CSV)",
+    label=" CSV تحميل النتائج",
     data=csv_data,
     file_name="نتائج_الأولوية.csv",
     mime="text/csv"
