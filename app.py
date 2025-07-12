@@ -7,17 +7,8 @@ import numpy as np
 # 0) إعداد الصفحة
 # —————————————————————————————————————————————————————————————
 st.set_page_config(page_title="سناد", layout="centered")
+st.image("logo1.png", width=200)
 
-
-# تأكدي أن logo1.png في جذر المشروع ومرفوع للـ git
-st.markdown(
-    """
-    <div style="text-align: center; margin-bottom: 2rem;">
-        <img src="logo1.png" width="200" alt="سناد Logo"/>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
 
 # —————————————————————————————————————————————————————————————
 # 1) حقن Bootstrap و CSS مخصَّص (قبل أي مكوّن UI)
