@@ -8,6 +8,13 @@ import numpy as np
 # —————————————————————————————————————————————————————————————
 st.markdown(
     """
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-ENjdO4Dr2bkBIFxQpeo5sJbL/w9iYhZ+3oQZl5Nq3uZMl+4xVZ9ZZTtmI3UksdQR"
+      crossorigin="anonymous"
+    >
     <style>
       /* حاوية التطبيق خلفية بيضاء ونص أسود */
       [data-testid="stAppViewContainer"] {
@@ -23,23 +30,16 @@ st.markdown(
         border-radius: 8px !important;
         padding: 1rem !important;
       }
-      /* تعليمات السحب/وإفلات داخل الـ Dropzone */
       [data-testid="stFileUploaderDropzoneInstructions"] {
         color: #000000 !important;
       }
-      /* الأيقونة داخل الصندوق */
       [data-testid="stFileUploaderDropzone"] svg {
         fill: #000000 !important;
       }
-      /* نص “Drag and drop file here” */
-      [data-testid="stFileUploaderDropzone"] .st-emotion-cache-9ycgxx {
-        color: #000000 !important;
-      }
-      /* تفاصيل الحجم (small) */
+      [data-testid="stFileUploaderDropzone"] .st-emotion-cache-9ycgxx,
       [data-testid="stFileUploaderDropzone"] small {
         color: #000000 !important;
       }
-      /* زر “Browse files” داخل الـ Dropzone */
       [data-testid="stBaseButton-secondary"] {
         background-color: #FFFFFF !important;
         color: #000000   !important;
@@ -48,19 +48,7 @@ st.markdown(
         border-radius: 4px !important;
       }
 
-      /* باقي التنسيقات كما كانت: جدول وإطارات خضراء وأزرار */
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 1em;
-      }
-      table, th, td {
-        border: 2px solid #28a745 !important;
-      }
-      th, td {
-        padding: 8px;
-        text-align: center;
-      }
+      /* زرّات Streamlit (بما في ذلك Download) */
       .stButton>button,
       [data-testid="stDownloadButton"] button {
         background-color: #28a745 !important;
@@ -69,6 +57,8 @@ st.markdown(
         border-radius: 5px !important;
         padding: 0.6em 1.2em !important;
       }
+
+      /* عناوين مركزيّة */
       h1, h2 {
         text-align: center !important;
       }
