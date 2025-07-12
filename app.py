@@ -8,16 +8,10 @@ import numpy as np
 # —————————————————————————————————————————————————————————————
 st.set_page_config(page_title="سناد", layout="centered")
 
-# نقوم بتحميل وعرض الصورة مركزية
-# تأكد أنّ ملف logo1.png في نفس مجلد app.py
-st.markdown(
-    """
-    <div style="text-align: center; margin-top: 1rem; margin-bottom: 1rem;">
-      <img src="logo1.png" width="200" alt="سناد Logo"/>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+
+# تأكدي أن logo1.png في جذر المشروع ومرفوع للـ git
+st.image("logo1.png", width=150)
+
 # —————————————————————————————————————————————————————————————
 # 1) حقن Bootstrap و CSS مخصَّص (قبل أي مكوّن UI)
 # —————————————————————————————————————————————————————————————
