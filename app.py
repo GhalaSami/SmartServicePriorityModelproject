@@ -4,17 +4,17 @@ import joblib
 import numpy as np
 
 # —————————————————————————————————————————————————————————————
-# 0) إعداد الصفحة
+# 0) Page configuration
 # —————————————————————————————————————————————————————————————
 st.set_page_config(page_title="سناد", layout="centered")
 # —————————————————————————————————————————————————————————————
-# 1) عرض الشعار مُتمركزًا
+# 1) Display logo centered
 # —————————————————————————————————————————————————————————————
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     st.image("logo1.png", width=200)
 # —————————————————————————————————————————————————————————————
-# 1) حقن Bootstrap و CSS مخصَّص (قبل أي مكوّن UI)
+# 2) Inject Bootstrap and custom CSS (before UI elements)
 # —————————————————————————————————————————————————————————————
 st.markdown(
     """
@@ -68,9 +68,8 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-
 # —————————————————————————————————————————————————————————————
-# 3) العنوان والوصف
+# 3) Display title and description
 # —————————————————————————————————————————————————————————————
 st.markdown(
     """
@@ -88,7 +87,7 @@ st.markdown(
 )
 
 # —————————————————————————————————————————————————————————————
-# 4) تحميل المودل وكلّ Artefacts
+# 4) Load model and related artifacts
 # —————————————————————————————————————————————————————————————
 artifacts = joblib.load("final_model.pkl")
 model                 = artifacts["model"]
@@ -103,8 +102,10 @@ group2_classification = artifacts["group2_classification"]
 group3_classification = artifacts["group3_classification"]
 
 # —————————————————————————————————————————————————————————————
-# 5) دوال مساعدة
+# 5) Helper functions
 # —————————————————————————————————————————————————————————————
+# Classify site based on location groups
+
 def classify_site_attribute(location):
     if location in group1_locations:
         return group1_classification
@@ -114,6 +115,7 @@ def classify_site_attribute(location):
         return group3_classification
     else:
         return "غير محدد"
+# Mapping classifications to numeric ranks
 
 site_rank_map = {
     group2_classification: 3,
@@ -121,6 +123,7 @@ site_rank_map = {
     group3_classification: 1,
     "غير محدد": 0
 }
+# Apply contextual boost based on custom logic
 
 def apply_contextual_boost(row):
     boost = 0
@@ -134,7 +137,7 @@ def apply_contextual_boost(row):
     return boost
 
 # —————————————————————————————————————————————————————————————
-# 6) رفع ملف البلاغات وتوقّف إذا لم يُرفع
+# 6) Upload file and stop if not uploaded
 # —————————————————————————————————————————————————————————————
 uploaded_file = st.file_uploader(
     label="", 
@@ -144,8 +147,9 @@ if not uploaded_file:
     st.info("لم يتم رفع الملف بعد")
     st.stop()
 
+
 # —————————————————————————————————————————————————————————————
-# 7) قراءة وتجهيز البيانات
+# 7) Read and preprocess input data
 # —————————————————————————————————————————————————————————————
 df = pd.read_excel(uploaded_file)
 if "عدد تكرار البلاغ" in df.columns:
@@ -154,9 +158,8 @@ if "عدد تكرار البلاغ" in df.columns:
 df["درجة الخطورة"] = df["نوع الخدمة"].map(danger_map)
 df["صفة الموقع"]  = df["موقع البلاغ"].apply(classify_site_attribute)
 df["صفة الموقع"]  = df["صفة الموقع"].map(site_rank_map)
-
 # —————————————————————————————————————————————————————————————
-# 8) حساب score و boost
+# 8) Calculate score and boost
 # —————————————————————————————————————————————————————————————
 df["score"] = (
       df["درجة الخطورة"] * weights["درجة الخطورة"]
@@ -166,9 +169,8 @@ df["score"] = (
 )
 df["boost"] = df.apply(apply_contextual_boost, axis=1)
 df["score"] += df["boost"]
-
 # —————————————————————————————————————————————————————————————
-# 9) التنبؤ وعرض أول 10 صفوف بجدول Bootstrap
+# 9) Predict priority and show top 10 results in a Bootstrap-styled table
 # —————————————————————————————————————————————————————————————
 X_new = df[features]
 df["مستوى_الأولوية"] = model.predict(X_new)
@@ -176,7 +178,7 @@ df["مستوى_الأولوية"] = model.predict(X_new)
 st.success("!تم التقييم")
 
 html_table = (
-    df.head(10)[[
+    df.head(10)[[ # Display only top 10 rows
         "نوع الخدمة","موقع البلاغ","عدد السكان",
         "عدد البلاغات","درجة الخطورة","صفة الموقع",
         "مستوى_الأولوية"
@@ -186,7 +188,7 @@ html_table = (
 st.markdown(html_table, unsafe_allow_html=True)
 
 # —————————————————————————————————————————————————————————————
-# 10) زرّ تحميل النتائج بصيغة CSV
+# 10) Download button for results as CSV
 # —————————————————————————————————————————————————————————————
 csv_data = df.to_csv(index=False)
 col1, col2, col3 = st.columns([1, 2, 1])
